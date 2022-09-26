@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32804.467
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PYP-CachingApp", "PYP-CachingApp\PYP-CachingApp.csproj", "{705D2F1F-4EFC-43CB-9A46-2B97E29A18C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{705D2F1F-4EFC-43CB-9A46-2B97E29A18C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{705D2F1F-4EFC-43CB-9A46-2B97E29A18C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{705D2F1F-4EFC-43CB-9A46-2B97E29A18C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{705D2F1F-4EFC-43CB-9A46-2B97E29A18C7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6706562E-4DCB-4F51-8154-4D28016FDAD3}
+	EndGlobalSection
+EndGlobal
