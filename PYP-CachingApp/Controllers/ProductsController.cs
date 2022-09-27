@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Build.Framework;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using PYP_CachingApp.DAL;
@@ -16,31 +18,32 @@ namespace PYP_CachingApp.Controllers
     public class ProductsController : Controller
     {
         private readonly AppDbContext _context;
-        private readonly IMemoryCache _memoryCache;
+        private readonly IDistributedCache _distributedCache;
 
-        public ProductsController(AppDbContext context, IMemoryCache memoryCache)
+
+        public ProductsController(AppDbContext context, IDistributedCache distributedCache)
         {
             _context = context;
-            _memoryCache = memoryCache;
+            _distributedCache = distributedCache;
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            DateTime date = DateTime.Now;
-            if (!_memoryCache.TryGetValue("products", out List<Product> products))
+            var products = await _distributedCache.GetStringAsync("products");
+            if (products == null)
             {
-                date = DateTime.Now;
-                _memoryCache.Set("products", await _context.Products.ToListAsync());
-                _memoryCache.Set("date", date);
-            }
-            
-            products = _memoryCache.Get("products") as List<Product>;
-            ViewBag.OldDate = _memoryCache.Get("date");
-            ViewBag.UpdateDate = DateTime.Now;
-            return View(products);
-        }
+                products = JsonConvert.SerializeObject(await _context.Products.ToListAsync());
+                await _distributedCache.SetStringAsync("products", products);
+                DateTime date = DateTime.Now;
+                await _distributedCache.SetStringAsync("date", date.ToString());
 
+            }
+            ViewBag.UpdateDate = await _distributedCache.GetStringAsync("date");
+            return View(JsonConvert.DeserializeObject<List<Product>>(products));
+
+        }
+      
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {

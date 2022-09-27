@@ -6,7 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
-builder.Services.AddMemoryCache();
+builder.Services.AddDistributedSqlServerCache(options =>
+{
+    options.ConnectionString = builder.Configuration.GetConnectionString("SqlServer");
+    options.SchemaName = "dbo";
+    options.TableName = "Products";
+   
+});
 var app = builder.Build();
 
 
